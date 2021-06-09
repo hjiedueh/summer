@@ -1,10 +1,9 @@
-import React, {useState} from 'react'
+import React from 'react'
 import model from '../../img/model.webp'
 // import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Image from 'react-bootstrap/Image'
 import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
 
 const Product = () => {
     return (
@@ -65,10 +64,10 @@ const ProdDetails = () => {
             </div>
             <div className="info-col mt-2">
                 <div className="size-guide-wrapper">
-                    <a href="#">SIZE GUIDE</a>
+                    <Link to="#">SIZE GUIDE</Link>
                 </div>
                 <div className="item-info-wrapper">
-                    <a href="#">ITEM INFO</a>
+                    <Link to="#">ITEM INFO</Link>
                 </div>
                 <div className="shipping-info-wrapper">
                     <p className="us-shipping">United States: Free shipping and returns on all orders.</p>

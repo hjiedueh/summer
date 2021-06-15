@@ -1,65 +1,56 @@
-import React, {useState} from 'react'
-import model from '../../img/model.webp'
-// import { useSelector, useDispatch } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import {
+    fetchItems,
+    selectItemIds,
+    selectItemsById
+} from './prodSlice'
 import { Link } from 'react-router-dom'
 import Image from 'react-bootstrap/Image'
 import Row from 'react-bootstrap/Row'
 
-let ItemExcerpt = ({ item }) => {
-    console.log(item.img)
+let ItemExcerpt = ({ itemId }) => {
+    const item = useSelector(state => selectItemsById(state, itemId))
     return (
-        <article className="recent col-4" key={item.id}>
-            <Link to='/prod'>
-                <Image src={model} className="recent-img" />
+        <article className="recent col-6">
+            <Link to={`/items/${item._id}`}>
+                <Image src={`/items/${item.picture}`} className="recent-img" />
             </Link>
         </article>
     )
 }
 
 export const ProdList = () => {
-    const [prod, setProd] = useState([
-        {
-            id: 1,
-            title: 'Test',
-            img: model
-        },
-        {
-            id: 2,
-            title: 'Test',
-            img: model
-        },
-        {
-            id: 3,
-            title: 'Test',
-            img: model
-        },
-        {
-            id: 4,
-            title: 'Test',
-            img: model
-        },
-        {
-            id: 5,
-            title: 'Test',
-            img: model
-        },
-        {
-            id: 6,
-            title: 'Test',
-            img: model
+    const dispatch = useDispatch()
+    const orderedItemIds = useSelector(selectItemIds)
+
+    const itemStatus = useSelector(state => state.items.status)
+    const error = useSelector(state => state.items.error)
+
+    useEffect(() => {
+        if (itemStatus === 'idle') {
+            dispatch(fetchItems())
         }
-    ])
+    }, [itemStatus, dispatch])
+
+    let content
+
+    if (itemStatus === 'loading') {
+        content = <div className='loader'>Loading...</div>
+    } else if (itemStatus === 'succeeded') {
+        content = 
+            <Row className='recent-wrapper'>
+                {orderedItemIds.map(itemId => (
+                    <ItemExcerpt itemId={itemId} key={itemId} />
+                ))} 
+            </Row>
+    } else if (itemStatus === 'error') {
+        content = <div>{error}</div>
+    }
 
     return (
         <div className='most-recent'>
-            <Row className='recent-header-wrapper'>
-                <h3 className='recent-header'>Collection</h3>
-            </Row>
-            <Row className='recent-wrapper'>
-                {prod.map(item => (
-                    <ItemExcerpt item = {item} />
-                ))}
-            </Row>
+            {content}
         </div>
         
     )

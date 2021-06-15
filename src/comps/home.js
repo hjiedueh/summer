@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container'
 
 export const Home = () => {
     return (
-        <Container fluid>
+        <Container fluid className='content-wrapper'>
             <Video />
             <ProdList />
         </Container>

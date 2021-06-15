@@ -2,34 +2,39 @@ import React from 'react'
 import Navbar from 'react-bootstrap/Navbar'
 import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
-import Button from 'react-bootstrap/Button'
-// import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
-const Header = (props) => {
-    // const dispatch = useDispatch()
+const Header = () => {
+    const cart = useSelector(state => state.cart)
+    // console.log(cart)
+    let cartNum
+    if (cart.totalQty < 10) {
+        cartNum = '0'+cart.totalQty
+    } else {
+        cartNum = cart.totalQty
+    }
 
 
     return (
         <div className="header">
-            <Navbar expand="lg" bg="light" variant="light">
+            <Navbar expand="lg" bg="light" variant="light" fixed="top">
                 <Container fluid>
                     <div className='nav-left'>
-                        <Button className='navbar-toggler nav-toggle' type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-                            <span className="">MENU</span>
-                        </Button>
-                        <div className='search-icon-wrapper'>
-                            <FontAwesomeIcon icon={faSearch} />
-                        </div>
+                        <Navbar.Toggle className="nav-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                            <span className="">menu</span>
+                        </Navbar.Toggle>
                     </div>
                     <div className='brand-wrapper me-auto text-center'>
                         <Navbar.Brand href="/home">Navbar</Navbar.Brand>
                     </div>
                     <div className='nav-right ms-5'>
-                        <p className="cart-num">00</p>
+                        {!cart ?
+                            <a href="/cart" className="cart-num">00</a>
+                            :
+                            <a href="/cart" className="cart-num">{cartNum}</a>
+                        }
                     </div>
-                    <Navbar.Collapse id="responsive-navbar-nav">
+                    <Navbar.Collapse id="navbarTogglerDemo03" className='header-nav'>
                         <Nav className="mr-auto">
                             <Nav.Link href="#features">MEN</Nav.Link>
                             <Nav.Link href="#pricing">WOMAN</Nav.Link>
